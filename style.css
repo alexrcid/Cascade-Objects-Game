@@ -1,0 +1,22 @@
+.container {
+   height: 800px;
+   margin: 30px auto;
+   width: 800px;
+   background-color: black;
+ }
+
+ .cell {
+   float: left;
+   height: 16px;
+   width: 16px;
+   box-sizing: border-box;
+   border: 1px solid rgba(255, 255, 255, 0.2);
+ }
+
+ .student {
+   background-color: red;
+ }
+
+.objects {
+  background-color: yellow;
+}
