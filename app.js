@@ -1,10 +1,14 @@
 function Student() {
   this.direction = "left";
-
   this.body = [
     { row: 47, column: 24 },
 
   ];
+}
+
+function Item (){
+
+  this.bodyItem = generateItem();
 }
 
 Student.prototype.move = function () {
@@ -28,6 +32,17 @@ Student.prototype.move = function () {
   this.body.pop();
 };
 
+Item.prototype.move = function () {
+  var head = generateItem();
+
+    this.bodyItem.unshift({
+      row: (head.row + 1),
+      column: head.column
+    });
+
+  this.body.pop();
+};
+
 
 Student.prototype.goLeft = function() {
    if (this.direction === 'left' || this.direction === 'right') {
@@ -44,7 +59,7 @@ Student.prototype.goLeft = function() {
 
 function Game() {
   this.student = new Student();
-  this.objects = undefined;
+  this.item = undefined;
 
    for (var row = 0; row < 50; row++) {
      for (var col = 0; col < 50; col++) {
@@ -55,8 +70,8 @@ function Game() {
         );
      }
    }
-   this.generateObjects();
-   this.drawObjects();
+   this.generateItem();
+   this.drawItem();
    this.drawStudent();
    this.assignControlsToKeys();
  }
@@ -64,7 +79,7 @@ function Game() {
  Game.prototype.drawStudent = function() {
      this.student.body.forEach(function(position, index) {
        var selector = '[data-row=' + position.row + ']' +
-                     '[data-col=' + position.column + ']';
+                      '[data-col=' + position.column + ']';
 
       $(selector).addClass('student');
     });
@@ -126,19 +141,19 @@ function Game() {
    }.bind(this));
  };
 
- Game.prototype.generateObjects = function() {
+ Game.prototype.generateItem = function() {
    do {
-     this.objects = {
+     this.item = {
        row: [0],
        column:  Math.floor(Math.random() * 50)
      };
-   } while (this.student.collidesWith(this.objects));
+   } while (this.student.collidesWith(this.item));
  };
 
- Game.prototype.drawObjects = function() {
-   var selector = '[data-row=' + this.objects.row + ']' +
-                  '[data-col=' + this.objects.column + ']';
-   $(selector).addClass('objects');
+ Game.prototype.drawItem = function() {
+   var selector = '[data-row=' + this.item.row + ']' +
+                  '[data-col=' + this.item.column + ']';
+   $(selector).addClass('item');
  };
 
 
