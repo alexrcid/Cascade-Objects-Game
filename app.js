@@ -5,10 +5,26 @@ function Student() {
   ];
 }
 
+// function checkScore() {
+//   var number1 = this.body.row;
+//
+//
+//   if (number1 === 49) {
+//     console.log ("I'm on the bottom");
+//   } else {
+//     if (number1 === this.body.column) {
+//       console.log("I'm scoring");
+//     } else {
+//       console.log("I'm falling");
+//     }
+//   }
+// }
+
 function Item (){
   this.body = [
     { row: 0, column: Math.floor(Math.random() * 50)}
   ];
+
 }
 
 Student.prototype.move = function () {
@@ -33,12 +49,16 @@ Student.prototype.move = function () {
 };
 
 Item.prototype.move = function () {
-  var head = this.body();
+  console.log('estoy moviendo el objetofg');
+  var head = this.body[0];
 
     this.body.unshift({
       row: (head.row + 1),
       column: head.column
     });
+
+    console.log(this.body);
+    console.log('======');
 
   this.body.pop();
 };
@@ -60,6 +80,7 @@ Student.prototype.goLeft = function() {
 function Game() {
   this.student = new Student();
   this.item = new Item();
+  //this.checkScore = new CheckScore();
 
    for (var row = 0; row < 50; row++) {
      for (var col = 0; col < 50; col++) {
@@ -70,11 +91,11 @@ function Game() {
         );
      }
    }
-   //this.generateItem();
    this.drawItem();
    this.drawStudent();
    this.assignControlsToKeys();
  }
+
 
  Game.prototype.drawStudent = function() {
      this.student.body.forEach(function(position, index) {
@@ -97,6 +118,9 @@ function Game() {
 Game.prototype.clearStudent = function() {
    $('.student').removeClass('student'); };
 
+Game.prototype.clearItem = function() {
+      $('.item').removeClass('item'); };
+
  Student.prototype.collidesWith = function(pos) {
    return this.body.some(function(el) {
      return el.row == pos.row && el.column == pos.column;
@@ -109,10 +133,16 @@ Game.prototype.clearStudent = function() {
     }
   };
 
+
+
  Game.prototype.update = function() {
+   console.log("ejecutando funcion update");
    this.student.move();
+   this.item.move();
    this.clearStudent();
+   this.clearItem();
    this.drawStudent();
+   this.drawItem();
  };
 
  Game.prototype.stop = function() {
@@ -147,16 +177,6 @@ Game.prototype.clearStudent = function() {
      }
    }.bind(this));
  };
-
- // Game.prototype.generateItem = function() {
- //   do {
- //     this.body = {
- //       row: [0],
- //       column:  Math.floor(Math.random() * 50)
- //     };
- //   } while (this.student.collidesWith(this.item));
- // };
-
 
 
 
