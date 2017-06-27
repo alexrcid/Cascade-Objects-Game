@@ -1,14 +1,14 @@
 function Student() {
   this.direction = "left";
   this.body = [
-    { row: 47, column: 24 },
-
+    { row: 47, column: 24 }
   ];
 }
 
 function Item (){
-
-  this.bodyItem = generateItem();
+  this.body = [
+    { row: 0, column: Math.floor(Math.random() * 50)}
+  ];
 }
 
 Student.prototype.move = function () {
@@ -33,9 +33,9 @@ Student.prototype.move = function () {
 };
 
 Item.prototype.move = function () {
-  var head = generateItem();
+  var head = this.body();
 
-    this.bodyItem.unshift({
+    this.body.unshift({
       row: (head.row + 1),
       column: head.column
     });
@@ -59,7 +59,7 @@ Student.prototype.goLeft = function() {
 
 function Game() {
   this.student = new Student();
-  this.item = undefined;
+  this.item = new Item();
 
    for (var row = 0; row < 50; row++) {
      for (var col = 0; col < 50; col++) {
@@ -70,7 +70,7 @@ function Game() {
         );
      }
    }
-   this.generateItem();
+   //this.generateItem();
    this.drawItem();
    this.drawStudent();
    this.assignControlsToKeys();
@@ -85,10 +85,17 @@ function Game() {
     });
   };
 
+  Game.prototype.drawItem = function() {
+    this.item.body.forEach(function(position, index) {
+    var selector = '[data-row=' + position.row + ']' +
+                   '[data-col=' + position.column + ']';
+      console.log(selector);
+      $(selector).addClass('item');
+    });
+  };
 
-  Game.prototype.clearStudent = function() {
-   $('.student').removeClass('student');
- };
+Game.prototype.clearStudent = function() {
+   $('.student').removeClass('student'); };
 
  Student.prototype.collidesWith = function(pos) {
    return this.body.some(function(el) {
@@ -141,20 +148,16 @@ function Game() {
    }.bind(this));
  };
 
- Game.prototype.generateItem = function() {
-   do {
-     this.item = {
-       row: [0],
-       column:  Math.floor(Math.random() * 50)
-     };
-   } while (this.student.collidesWith(this.item));
- };
+ // Game.prototype.generateItem = function() {
+ //   do {
+ //     this.body = {
+ //       row: [0],
+ //       column:  Math.floor(Math.random() * 50)
+ //     };
+ //   } while (this.student.collidesWith(this.item));
+ // };
 
- Game.prototype.drawItem = function() {
-   var selector = '[data-row=' + this.item.row + ']' +
-                  '[data-col=' + this.item.column + ']';
-   $(selector).addClass('item');
- };
+
 
 
 
