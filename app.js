@@ -8,10 +8,10 @@ function Student() {
 
 
 function Item (){
-  this.body = [
-    { row: 0, column: Math.floor(Math.random() * 50)}
-  ];
+  this.position =
+    {row: 0, column: Math.floor(Math.random() * 50)};
 }
+
 
 Student.prototype.move = function () {
   var head = this.body[0];
@@ -35,23 +35,16 @@ Student.prototype.move = function () {
 };
 
 Item.prototype.move = function () {
-  var head = this.body[0];
-
-    this.body.unshift({
-      row: (head.row + 1),
-      column: head.column
-    });
-
-  this.body.pop();
-
+  this.position.row =  this.position.row + 1;
 };
 
+
 Game.prototype.checkPosition = function(){
-  var itemCurrentPosition = this.item.body[0];
+  var itemCurrentPosition = this.item.position;
   var studentCurrentPosition = this.student.body[0];
 
   if(itemCurrentPosition.row === studentCurrentPosition.row &&
-     itemCurrentPosition.column === studentCurrentPosition.column){  
+     itemCurrentPosition.column === studentCurrentPosition.column){
     console.log("Picked");
   } else {
     console.log("Not yet");
@@ -71,10 +64,24 @@ Student.prototype.goLeft = function() {
    }
  };
 
+// Game.prototype.buclee = function(){
+//   var i = 0;
+// var intervalId = setInterval(function () {
+//   console.log(i);
+//   console.log("do something");
+//   i++;
+//
+//   if (i > 10) {
+//     clearInterval(intervalId);
+//   }
+// }.bind(this), 1000);
+// };
+
 
 function Game() {
   this.student = new Student();
-  this.item = new Item();
+  this.items = []
+  // this.colection = [];
 
    for (var row = 0; row < 50; row++) {
      for (var col = 0; col < 50; col++) {
@@ -88,9 +95,23 @@ function Game() {
    this.drawItem();
    this.drawStudent();
    this.assignControlsToKeys();
+  //  this.buclee();
+  // this.generatorItem();
  }
 
-
+//  Game.prototype.generatorItem = function () {
+//
+//    var i = this.drawItem();
+//    var intervalId = setInterval(function () {
+//      console.log(i);
+//
+//      i++;
+//
+//      if (i > 10) {
+//        clearInterval(intervalId);
+//      }
+//    }, 1000);
+// };
 Game.prototype.drawStudent = function() {
      this.student.body.forEach(function(position, index) {
        var selector = '[data-row=' + position.row + ']' +
@@ -101,9 +122,13 @@ Game.prototype.drawStudent = function() {
   };
 
 Game.prototype.drawItem = function() {
-    this.item.body.forEach(function(position, index) {
-    var selector = '[data-row=' + position.row + ']' +
-                   '[data-col=' + position.column + ']';
+
+
+
+
+    this.items.forEach(function(item, index) {
+    var selector = '[data-row=' + item.position.row + ']' +
+                   '[data-col=' + item.position.column + ']';
       $(selector).addClass('item');
     });
   };
@@ -116,21 +141,36 @@ Game.prototype.clearItem = function() {
 
  Game.prototype.start = function() {
     if (!this.intervalId) {
-      this.intervalId = setInterval(this.update.bind(this), 300);
+      this.intervalId = setInterval(this.update.bind(this), 1000);
     }
   };
 
  Game.prototype.update = function() {
-   if(this.item.body[0].row > 44){
-     console.log("El item ha pasado la fila 44");
-     this.checkPosition();
-   }
-   this.student.move();
-   this.item.move();
-   this.clearStudent();
-   this.clearItem();
-   this.drawStudent();
-   this.drawItem();
+   var item = new Item();
+   if(this.items.length === 0) this.items.push(item);
+
+   var counter = 0;
+
+   this.start = function(){
+     var item = this.items[counter];
+     if(item.position.row > 45){
+       console.log("El item ha pasado la fila 45");
+       this.checkPosition();
+     }
+     item.move();
+     this.student.move();
+     this.clearStudent();
+     this.clearItem();
+     this.drawStudent();
+     this.drawItem();
+
+     if (counter < this.items.length) {
+       this.start();
+     }
+
+   }.bind(this);
+
+   this.start();
  };
 
  Game.prototype.stop = function() {
