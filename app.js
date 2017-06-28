@@ -5,26 +5,12 @@ function Student() {
   ];
 }
 
-// function checkScore() {
-//   var number1 = this.body.row;
-//
-//
-//   if (number1 === 49) {
-//     console.log ("I'm on the bottom");
-//   } else {
-//     if (number1 === this.body.column) {
-//       console.log("I'm scoring");
-//     } else {
-//       console.log("I'm falling");
-//     }
-//   }
-// }
+
 
 function Item (){
   this.body = [
     { row: 0, column: Math.floor(Math.random() * 50)}
   ];
-
 }
 
 Student.prototype.move = function () {
@@ -49,7 +35,6 @@ Student.prototype.move = function () {
 };
 
 Item.prototype.move = function () {
-  console.log('estoy moviendo el objetofg');
   var head = this.body[0];
 
     this.body.unshift({
@@ -57,12 +42,22 @@ Item.prototype.move = function () {
       column: head.column
     });
 
-    console.log(this.body);
-    console.log('======');
-
   this.body.pop();
+
 };
 
+Game.prototype.checkPosition = function(){
+  var itemCurrentPosition = this.item.body[0];
+  var studentCurrentPosition = this.student.body[0];
+
+  if(itemCurrentPosition.row === studentCurrentPosition.row &&
+     itemCurrentPosition.column === studentCurrentPosition.column){  
+    console.log("Picked");
+  } else {
+    console.log("Not yet");
+  }
+
+};
 
 Student.prototype.goLeft = function() {
    if (this.direction === 'left' || this.direction === 'right') {
@@ -80,7 +75,6 @@ Student.prototype.goLeft = function() {
 function Game() {
   this.student = new Student();
   this.item = new Item();
-  //this.checkScore = new CheckScore();
 
    for (var row = 0; row < 50; row++) {
      for (var col = 0; col < 50; col++) {
@@ -97,7 +91,7 @@ function Game() {
  }
 
 
- Game.prototype.drawStudent = function() {
+Game.prototype.drawStudent = function() {
      this.student.body.forEach(function(position, index) {
        var selector = '[data-row=' + position.row + ']' +
                       '[data-col=' + position.column + ']';
@@ -106,11 +100,10 @@ function Game() {
     });
   };
 
-  Game.prototype.drawItem = function() {
+Game.prototype.drawItem = function() {
     this.item.body.forEach(function(position, index) {
     var selector = '[data-row=' + position.row + ']' +
                    '[data-col=' + position.column + ']';
-      console.log(selector);
       $(selector).addClass('item');
     });
   };
@@ -121,22 +114,17 @@ Game.prototype.clearStudent = function() {
 Game.prototype.clearItem = function() {
       $('.item').removeClass('item'); };
 
- Student.prototype.collidesWith = function(pos) {
-   return this.body.some(function(el) {
-     return el.row == pos.row && el.column == pos.column;
-   });
- };
-
  Game.prototype.start = function() {
     if (!this.intervalId) {
-      this.intervalId = setInterval(this.update.bind(this), 100);
+      this.intervalId = setInterval(this.update.bind(this), 300);
     }
   };
 
-
-
  Game.prototype.update = function() {
-   console.log("ejecutando funcion update");
+   if(this.item.body[0].row > 44){
+     console.log("El item ha pasado la fila 44");
+     this.checkPosition();
+   }
    this.student.move();
    this.item.move();
    this.clearStudent();
