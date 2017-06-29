@@ -33,14 +33,21 @@ Game.prototype.start = function(){
   this.update();
 };
 
+
 Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent){
-  if (this.student.position.row === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
-    console.log(" ================  YEAAAH   =================");
-  } else {
-    console.log('No collision...   :( ');
+
+  if( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col ){
+      console.log(" ================  YEAAAH   =================");
+    } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col-1 === itemCloseToTheStudent.position.col) {
+      console.log(" ================  YEAAAH   =================");
+    } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col+1 === itemCloseToTheStudent.position.col) {
+      console.log(" ================  YEAAAH   ================= ");
+    } else if ( this.student.position.row-1  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
+      console.log(" ================  YEAAAH   ================= ");
+    } else {
+      console.log('No collision...   :( ');
   }
 };
-
 // Game.prototype.studentCollision = function(){
 //
 //   var a, b, c;
@@ -59,7 +66,11 @@ Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent){
 
 Game.prototype.update = function(){
   this.itemInterval = setInterval(this.createItem.bind(this),2000); // Item generation time
-  this.interval = setInterval(this.updateItem.bind(this), 400); // Item Speed
+  this.interval = setInterval(this.updateItem.bind(this), 80); // Item Speed
+};
+
+Game.prototype.collidesWith = function(position) {
+  return el.column == position.column;
 };
 
 Game.prototype.assignControlsToKeys = function() {
@@ -84,7 +95,7 @@ Game.prototype.updateItem = function(){
   for(var i=0; i < this.items.length; i++) {
     currentItem = this.items[i];
     currentItem.move();
-    if( currentItem.position.row > 46 && currentItem.position.row < 48){
+    if( currentItem.position.row > 44 && currentItem.position.row < 48){
       this.checkIfStudentCatchTheItem(currentItem);
     } // End if
   } // End for
@@ -102,12 +113,12 @@ Student.prototype.move = function () {
     case "left":
       this.position.col -= 1;
       this.show();
-      setTimeout(this.move.bind(this), 80);
+      setTimeout(this.move.bind(this), 65);
       break;
     case "right":
       this.position.col += 1;
       this.show();
-      setTimeout(this.move.bind(this), 80);
+      setTimeout(this.move.bind(this), 65);
       break;
   }
 };
