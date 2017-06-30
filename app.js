@@ -1,7 +1,7 @@
 function Game() {
   this.counter = 0;
   this.failsCounter = 0;
-  this.timeCounter = 12;
+  this.timeCounter = 120;
 
   this.items = [];
 
@@ -35,7 +35,7 @@ Game.prototype.start = function(){
   this.assignControlsToKeys();
   this.createItem();
   this.update();
-  this.countDown();
+  setInterval(this.countDown.bind(this), 1000);
   //this.transportacion();
 };
 
@@ -95,9 +95,8 @@ Game.prototype.update = function(){
 Game.prototype.countDown = function() {
   if (this.timeCounter === 0) {
     delete this.start;
-    $("#timeTitle").append(game.timeCounter);
   }
-
+  $("#timeTitle").text(this.timeCounter);
   this.timeCounter--;
 
 };
