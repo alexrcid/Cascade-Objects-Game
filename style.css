@@ -15,8 +15,8 @@ body {
    border-radius: 20%;
    font-size: 30px;
    font-family: Arial;
-   width:200px;
-   height:60px;
+   width:180px;
+   height:140px;
    padding: 20px;
    padding-top: 0;
    margin-left: 80%;
@@ -25,6 +25,9 @@ body {
  }
 
  #scoreTitle{
+   color: black;
+ }
+ #timeTitle{
    color: black;
  }
 

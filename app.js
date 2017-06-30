@@ -1,6 +1,8 @@
 function Game() {
   this.counter = 0;
   this.failsCounter = 0;
+  this.timeCounter = 12;
+
   this.items = [];
 
    for (var row = 0; row < 50; row++) {
@@ -33,33 +35,37 @@ Game.prototype.start = function(){
   this.assignControlsToKeys();
   this.createItem();
   this.update();
+  this.countDown();
   //this.transportacion();
 };
 
 
-Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent){
+Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent, index){
 
   if( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col ){
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
+      //this.removeItem(itemCloseToTheStudent, index, false);
 
-    } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col-1 === itemCloseToTheStudent.position.col) {
+  } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col-1 === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
+      //this.removeItem(itemCloseToTheStudent, index, false);
 
-    } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col+1 === itemCloseToTheStudent.position.col) {
+  } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col+1 === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
+      //this.removeItem(itemCloseToTheStudent, index, false);
 
-    } else if ( this.student.position.row-1  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
+  } else if ( this.student.position.row-1  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
+      //this.removeItem(itemCloseToTheStudent, index, false);
 
-    } else {
   }
 };
 // Game.prototype.studentCollision = function(){
@@ -86,6 +92,15 @@ Game.prototype.update = function(){
 // Game.prototype.collidesWith = function(position) {
 //   return el.column == position.column;
 // };
+Game.prototype.countDown = function() {
+  if (this.timeCounter === 0) {
+    delete this.start;
+    $("#timeTitle").append(game.timeCounter);
+  }
+
+  this.timeCounter--;
+
+};
 
 Game.prototype.assignControlsToKeys = function() {
   $(document).on('keydown', function(e) {
@@ -110,26 +125,25 @@ Game.prototype.updateItem = function(){
     currentItem = this.items[i];
 
 
-    if(currentItem !== null){
+    if(currentItem !== false){
       // Check collision with student
       if( currentItem.position.row > 44 && currentItem.position.row < 48){
-        this.checkIfStudentCatchTheItem(currentItem);
+        this.checkIfStudentCatchTheItem(currentItem, i);
       } // End nested if
 
       currentItem.move();
 
-      if( currentItem.position.row > 48 ){
+      if( currentItem.position.row > 49 ){
         this.failsCounter++;
-        this.removeItem(currentItem, i);
+        this.removeItem(currentItem, i, false);
       } // End nested if
     } // End if
   } // End for
 };
 
-Game.prototype.removeItem = function(itemToBeRemove, index) {
+Game.prototype.removeItem = function(itemToBeRemove, index, studentCatchTheItem) {
   $('.cell[data-row=' + itemToBeRemove.position.row + ']').removeClass('item');
-  this.items[index] = null;
-  console.log(this.items);
+  this.items[index] = studentCatchTheItem;
 };
 
 // Student Constructor
