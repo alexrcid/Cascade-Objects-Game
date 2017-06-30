@@ -46,25 +46,25 @@ Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent, inde
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
-      //this.removeItem(itemCloseToTheStudent, index, false);
+      //this.removeItem(itemCloseToTheStudent, index, true);
 
   } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col-1 === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
-      //this.removeItem(itemCloseToTheStudent, index, false);
+      //this.removeItem(itemCloseToTheStudent, index, true);
 
   } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col+1 === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
-      //this.removeItem(itemCloseToTheStudent, index, false);
+      //this.removeItem(itemCloseToTheStudent, index, true);
 
   } else if ( this.student.position.row-1  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
       console.log(this.counter++);
       $("#scoreTitle").empty();
       $("#scoreTitle").append(game.counter);
-      //this.removeItem(itemCloseToTheStudent, index, false);
+      //this.removeItem(itemCloseToTheStudent, index, true);
 
   }
 };

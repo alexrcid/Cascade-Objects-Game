@@ -1,32 +1,58 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+}
+
 body {
   background-image: url("fondo.jpeg");
   background-size: cover;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+
 }
 
   #board {
    height: 800px;
-   margin: 30px auto;
+   margin: 0 auto;
    width: 800px;
    background-color: rgba(0, 0, 0, 0.4);
  }
 
  #score {
-   background-color: rgba(255, 170, 32, 0.6);;
-   border-radius: 20%;
-   font-size: 30px;
+   background-color: rgba(221, 232, 47, 0.8);
+   border: 2px solid white;
    font-family: Arial;
-   width:180px;
-   height:140px;
-   padding: 20px;
-   padding-top: 0;
-   margin-left: 80%;
-   float: left;
+   width: 180px;
+   padding: 1em;
    position: absolute;
+   right: 1em;
+   top: 1em;
+   color: black;
+   height: auto;
+   min-height: 220px;
+   font-size: 2rem;
+   text-align: center;
  }
+
+#score h3 {
+  font-family: "Monofett", sans-serif;
+}
+
+#score span {
+  font-family: sans-serif;
+  font-size: 3rem;
+}
 
  #scoreTitle{
    color: black;
  }
+
  #timeTitle{
    color: black;
  }
