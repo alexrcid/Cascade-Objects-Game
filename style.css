@@ -10,6 +10,24 @@ body {
    background-color: rgba(0, 0, 0, 0.4);
  }
 
+ #score {
+   background-color: rgba(255, 170, 32, 0.6);;
+   border-radius: 20%;
+   font-size: 30px;
+   font-family: Arial;
+   width:200px;
+   height:60px;
+   padding: 20px;
+   padding-top: 0;
+   margin-left: 80%;
+   float: left;
+   position: absolute;
+ }
+
+ #scoreTitle{
+   color: black;
+ }
+
  .cell {
    float: left;
    height: 16px;

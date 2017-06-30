@@ -1,4 +1,6 @@
 function Game() {
+  this.counter = 0;
+  this.failsCounter = 0;
   this.items = [];
 
    for (var row = 0; row < 50; row++) {
@@ -31,21 +33,33 @@ Game.prototype.start = function(){
   this.assignControlsToKeys();
   this.createItem();
   this.update();
+  //this.transportacion();
 };
 
 
 Game.prototype.checkIfStudentCatchTheItem = function(itemCloseToTheStudent){
 
   if( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col ){
-      console.log(" ================  YEAAAH   =================");
+      console.log(this.counter++);
+      $("#scoreTitle").empty();
+      $("#scoreTitle").append(game.counter);
+
     } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col-1 === itemCloseToTheStudent.position.col) {
-      console.log(" ================  YEAAAH   =================");
+      console.log(this.counter++);
+      $("#scoreTitle").empty();
+      $("#scoreTitle").append(game.counter);
+
     } else if ( this.student.position.row  === itemCloseToTheStudent.position.row && this.student.position.col+1 === itemCloseToTheStudent.position.col) {
-      console.log(" ================  YEAAAH   ================= ");
+      console.log(this.counter++);
+      $("#scoreTitle").empty();
+      $("#scoreTitle").append(game.counter);
+
     } else if ( this.student.position.row-1  === itemCloseToTheStudent.position.row && this.student.position.col === itemCloseToTheStudent.position.col) {
-      console.log(" ================  YEAAAH   ================= ");
+      console.log(this.counter++);
+      $("#scoreTitle").empty();
+      $("#scoreTitle").append(game.counter);
+
     } else {
-      console.log('No collision...   :( ');
   }
 };
 // Game.prototype.studentCollision = function(){
@@ -69,9 +83,9 @@ Game.prototype.update = function(){
   this.interval = setInterval(this.updateItem.bind(this), 80); // Item Speed
 };
 
-Game.prototype.collidesWith = function(position) {
-  return el.column == position.column;
-};
+// Game.prototype.collidesWith = function(position) {
+//   return el.column == position.column;
+// };
 
 Game.prototype.assignControlsToKeys = function() {
   $(document).on('keydown', function(e) {
@@ -94,11 +108,28 @@ Game.prototype.updateItem = function(){
   var currentItem;
   for(var i=0; i < this.items.length; i++) {
     currentItem = this.items[i];
-    currentItem.move();
-    if( currentItem.position.row > 44 && currentItem.position.row < 48){
-      this.checkIfStudentCatchTheItem(currentItem);
+
+
+    if(currentItem !== null){
+      // Check collision with student
+      if( currentItem.position.row > 44 && currentItem.position.row < 48){
+        this.checkIfStudentCatchTheItem(currentItem);
+      } // End nested if
+
+      currentItem.move();
+
+      if( currentItem.position.row > 48 ){
+        this.failsCounter++;
+        this.removeItem(currentItem, i);
+      } // End nested if
     } // End if
   } // End for
+};
+
+Game.prototype.removeItem = function(itemToBeRemove, index) {
+  $('.cell[data-row=' + itemToBeRemove.position.row + ']').removeClass('item');
+  this.items[index] = null;
+  console.log(this.items);
 };
 
 // Student Constructor
@@ -122,6 +153,17 @@ Student.prototype.move = function () {
       break;
   }
 };
+//
+// Game.prototype.transportacion = function() {
+//
+//   if(this.student.position.row  === this.student.position.row[0]){
+//     console.log("izquierda");
+//     // return this.student.position.row[49];
+//   } else if (this.student.position.row  === this.student.position.row[49]){
+//     console.log("derecha");
+//     // return this.student.position.row[0];
+//   }
+// };
 
 Student.prototype.goLeft = function() {
   if (this.direction === 'left' || this.direction === 'right') {
@@ -158,7 +200,6 @@ Item.prototype.move = function () {
   $(this.selector(this.position.row - 1)).removeClass('item');
   $(this.selector()).addClass('item');
 };
-
 
 var game;
 $(document).ready(function(){
